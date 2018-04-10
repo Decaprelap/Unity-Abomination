@@ -7,7 +7,10 @@ public class BulletEmitter : MonoBehaviour {
     public GameObject bulletGfx;
 	public GameObject RailGfx;
 
-    public float bulletSpeed;
+    public float fireRate;
+    private float count;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -16,11 +19,19 @@ public class BulletEmitter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(0)){
-            GameObject activeBullet = Instantiate(bulletGfx, bulletEmit.position, bulletEmit.rotation);
-            activeBullet.GetComponent<Rigidbody>().velocity = activeBullet.transform.forward * bulletSpeed;
+
+        count += 1 * Time.deltaTime;
+        if (Input.GetMouseButton(0) && !GameObject.Find("Player").GetComponent<Movement>().wishEvade)
+        {
+            if (count >= fireRate)
+            {
+                GameObject activeBullet = Instantiate(bulletGfx, bulletEmit.position, bulletEmit.rotation);
+                count = 0f;
+            }
+
         }
-		if (Input.GetMouseButtonDown(1)){
+		if (Input.GetMouseButtonDown(1))
+        {
 			GameObject activeBullet = Instantiate(RailGfx, bulletEmit.position, bulletEmit.rotation);
 		}
     }

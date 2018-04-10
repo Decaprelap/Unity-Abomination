@@ -4,16 +4,30 @@ using UnityEngine;
 
 public class BulletProperties : MonoBehaviour {
 
-	public float Lifetime = 2.0f;           //Time untill bullets clear
+	public float Lifetime = 1.6f;           //Time untill bullets clear
 	public int Damage = 1;
-	public int Penetration = 3;
+	public int Penetration = 2;
 	int _health;
 
-	void Start () {
+    public float bulletMaxSpeed = 2850;
+    public float AccelTime = 1f;
+    private float bulletSpeed = 0;
+    private float t = 0;
+
+    void Start () {
 		Destroy(gameObject, Lifetime);
 	}
 
-	void OnTriggerEnter(Collider other)
+    private void FixedUpdate()
+    {
+        // Bullet acceleration
+        t += 1 / AccelTime * Time.deltaTime;
+        bulletSpeed = Mathf.Lerp(bulletMaxSpeed, bulletMaxSpeed/4f, t);
+        // Move Bullet foward
+        GetComponent<Rigidbody>().velocity = transform.forward * bulletSpeed * Time.deltaTime;
+    }
+
+    void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.CompareTag("Hitbox"))
 		{

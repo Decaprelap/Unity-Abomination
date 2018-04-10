@@ -5,7 +5,11 @@ licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - bulletEmit: {instanceID: 0}
+  - bulletGfx: {fileID: 1520448228350484, guid: b826d59d9db2b1b438891a3371ef738a,
+      type: 2}
+  - RailGfx: {fileID: 1520448228350484, guid: 2630590a90f5e4aa6bd0ce5f29c73ff8, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

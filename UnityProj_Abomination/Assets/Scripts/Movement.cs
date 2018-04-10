@@ -9,10 +9,9 @@ public class Movement : MonoBehaviour
 
     // Get Camera and Player Object
     public Transform Player;
-    private CharacterController Controller;
 
     // EVADE SYSTEM \\
-    private bool wishEvade = false;
+    public bool wishEvade = false;
     private Vector3 moveDir;
 
     public float evadeDuration = 2.0f;      // Full duration of evade maneuver
@@ -38,9 +37,6 @@ public class Movement : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
 
-        // Finds the CharacterController component in object with this script
-		Controller = GetComponent<CharacterController> ();
-
         // Uses input acceleration time as % of full evade duration
         evadeAccelTime = evadeDuration * evadeAccelTime;
         evadeReady = evadeCooldown;
@@ -64,8 +60,7 @@ public class Movement : MonoBehaviour
         var z = Input.GetAxis("Vertical") * maxMoveSpeed * Time.deltaTime;
         var x = Input.GetAxis("Horizontal") * maxMoveSpeed * Time.deltaTime;
         currentMoveSpeed = Mathf.Pow(Mathf.Pow(x/Time.deltaTime,2) + Mathf.Pow(z / Time.deltaTime, 2),0.5f);
-        //Debug.Log(x + " :x");
-        Debug.Log("Speed: " + currentMoveSpeed);
+        //Debug.Log("Speed: " + currentMoveSpeed);
         if (!wishEvade) {
             transform.Translate(x, 0, z, Space.World);
         }
@@ -76,7 +71,8 @@ public class Movement : MonoBehaviour
     }
 
 	private void OnTriggerEnter(Collider other) {
-		if (other.gameObject.tag == "Hitbox" || other.gameObject.tag == "Hazard") {
+        Debug.Log("Colliding With" + other);
+		if (other.gameObject.tag == "Hitbox" && !wishEvade || other.gameObject.tag == "Hazard" && !wishEvade) {
 			Debug.Log("A " + other + " killed you");
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
@@ -116,15 +112,13 @@ public class Movement : MonoBehaviour
 
             t = 0;
             evadeCounter = 0.0f;
-			GetComponent<Collider>().isTrigger = true;
         }
 
         if (Input.GetButtonDown("Evade") && evadeReady >= evadeCooldown) {
             wishEvade = true;
-            }
+        }
         if (wishEvade && evadeReady >= evadeCooldown) {
             evadeCounter += 1 * Time.deltaTime;
-			GetComponent<Collider>().isTrigger = false;
 
 
             // Acceleration and decceleration function

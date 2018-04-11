@@ -25,14 +25,14 @@ public class BulletEmitter : MonoBehaviour {
         {
             if (count >= fireRate)
             {
-                GameObject activeBullet = Instantiate(bulletGfx, bulletEmit.position, bulletEmit.rotation);
+                Instantiate(bulletGfx, bulletEmit.position, bulletEmit.rotation);
                 count = 0f;
             }
 
         }
 		if (Input.GetMouseButtonDown(1))
         {
-			GameObject activeBullet = Instantiate(RailGfx, bulletEmit.position, bulletEmit.rotation);
+			Instantiate(RailGfx, bulletEmit.position, bulletEmit.rotation);
 		}
     }
 }

@@ -8,14 +8,16 @@ public class AbominationProperties1 : MonoBehaviour {
 	public float speed = 1.0f;
 	public float newPositionTime = 5.0f;
 
-	public Transform target;
-
-	//misc variables
-	bool oneCall = true;
-	float count = 0;
-
 	void Update() {
-		float step = speed * Time.deltaTime;
-		transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+        if (GameObject.Find("Player").transform.position == null)
+        {
+            Debug.Log("No target for Abominations");
+            return;
+        }
+        if (GameObject.Find("Player").transform.position != null)
+        {
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, GameObject.Find("Player").transform.position, step);
+        }
 	}
 }

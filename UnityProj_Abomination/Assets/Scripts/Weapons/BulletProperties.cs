@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class BulletProperties : MonoBehaviour {
 
-	public float Lifetime = 1.6f;           //Time untill bullets clear
+	public float Lifetime = 1f;           //Time untill bullets clear
 	public int Damage = 1;
 	public int Penetration = 2;
-	int _health;
+    public bool friendly = false;
+
+    int _health;
 
     public float bulletMaxSpeed = 2850;
-    public float AccelTime = 1f;
     private float bulletSpeed = 0;
     private float t = 0;
 
@@ -21,7 +22,7 @@ public class BulletProperties : MonoBehaviour {
     private void FixedUpdate()
     {
         // Bullet acceleration
-        t += 1 / AccelTime * Time.deltaTime;
+        t += 1 / Lifetime * Time.deltaTime;
         bulletSpeed = Mathf.Lerp(bulletMaxSpeed, bulletMaxSpeed/4f, t);
         // Move Bullet foward
         GetComponent<Rigidbody>().velocity = transform.forward * bulletSpeed * Time.deltaTime;
@@ -29,7 +30,7 @@ public class BulletProperties : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.CompareTag("Hitbox"))
+		if (other.gameObject.CompareTag("Hitbox") && friendly)
 		{
 			other.gameObject.GetComponent<EntityHealth>().health -= Damage;
 			if (other.gameObject.GetComponent<EntityHealth> ().health <= 0)
